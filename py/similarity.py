@@ -1,6 +1,6 @@
 
+from PyQt5 import QtWidgets, QtGui, QtCore
 
-from PyQt4 import QtCore, QtGui
 import sys, os
 import filecmp
 import send2trash
@@ -67,23 +67,23 @@ class QFFMPEGMovie(QtGui.QImageReader):
         self.vid.close()
 
 
-class VLine(QtGui.QFrame):
+class VLine(QtWidgets.QFrame):
     def __init__(self):
-        QtGui.QFrame.__init__(self)
-        self.setFrameShape(QtGui.QFrame.VLine)
-        self.setFrameShadow(QtGui.QFrame.Sunken)
+        QtWidgets.QFrame.__init__(self)
+        self.setFrameShape(QtWidgets.QFrame.VLine)
+        self.setFrameShadow(QtWidgets.QFrame.Sunken)
 
 
-class FolderSelecter(QtGui.QWidget):
+class FolderSelecter(QtWidgets.QWidget):
     def __init__(self):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QHBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QHBoxLayout()
         self.setLayout(layout)
 
         self.action = None
-        self.edit = QtGui.QLineEdit()
-        self.browseBtn = QtGui.QPushButton("browse")
-        self.startBtn = QtGui.QPushButton("start")
+        self.edit = QtWidgets.QLineEdit()
+        self.browseBtn = QtWidgets.QPushButton("browse")
+        self.startBtn = QtWidgets.QPushButton("start")
 
         self.browseBtn.clicked.connect(self.browseBtn_clicked)
         self.startBtn.clicked.connect(self.startBtn_clicked)
@@ -101,7 +101,7 @@ class FolderSelecter(QtGui.QWidget):
         self.action(str(self.edit.text()))
 
     def browseBtn_clicked(self):
-        res = QtGui.QFileDialog.getExistingDirectory(
+        res = QtWidgets.QFileDialog.getExistingDirectory(
             self,
             "select folder",
             str(self.edit.text())
@@ -113,16 +113,16 @@ class FolderSelecter(QtGui.QWidget):
 
 
 
-class OptionSelecter(QtGui.QWidget):
+class OptionSelecter(QtWidgets.QWidget):
     def __init__(self):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QHBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QHBoxLayout()
         self.setLayout(layout)
 
         self.options = {}
         layout.addStretch()
         for n, l, c in [("bytecomp", "byte comp", True), ("histo", "histogram comp", False), ("gifhisto", "gif histogram comp", False)]:
-            w = QtGui.QCheckBox(l)
+            w = QtWidgets.QCheckBox(l)
             self.options[n] = w
             w.setChecked(c)
             layout.addWidget(w)
@@ -164,9 +164,9 @@ class QGIFMovie(QtGui.QImageReader):
 
 
 
-class ImageViewer(QtGui.QLabel):
+class ImageViewer(QtWidgets.QLabel):
     def __init__(self, *args, **kwargs):
-        QtGui.QLabel.__init__(self, *args, **kwargs)
+        QtWidgets.QLabel.__init__(self, *args, **kwargs)
         self.original_pixmap = QtGui.QPixmap()
 
     def getOriginalSize(self):
@@ -188,25 +188,25 @@ class ImageViewer(QtGui.QLabel):
 
 
 
-class ImgDisplayer(QtGui.QWidget):
+class ImgDisplayer(QtWidgets.QWidget):
     def __init__(self, w, h):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
         self.action = None
         self.movie = None
         self.imgPath = ""
-        self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
 
-        self.indicator = QtGui.QLabel("...", alignment=QtCore.Qt.AlignHCenter)
+        self.indicator = QtWidgets.QLabel("...", alignment=QtCore.Qt.AlignHCenter)
         self.indicator.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        self.indicator.setSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        self.indicator.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
         self.img = ImageViewer(alignment=QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
         self.img.setMinimumSize(w, h)
-        self.img.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.img.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
 
-        self.delBtn = QtGui.QPushButton("delete")
+        self.delBtn = QtWidgets.QPushButton("delete")
         self.delBtn.clicked.connect(self.delBtn_clicked)
 
         layout.addWidget(self.indicator, alignment=QtCore.Qt.AlignHCenter)
@@ -216,7 +216,7 @@ class ImgDisplayer(QtGui.QWidget):
 
     def delBtn_clicked(self):
         self.clearPixmapMovie()
-        print "delete", self.indicator.text()
+        print("delete %s" % self.indicator.text())
         send2trash.send2trash(self.imgPath)
         self.action()
 
@@ -267,23 +267,23 @@ class ImgDisplayer(QtGui.QWidget):
 
 
 
-class ComparisonDisplayer(QtGui.QWidget):
+class ComparisonDisplayer(QtWidgets.QWidget):
     def __init__(self):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
         self.index = 0
 
-        self.indicator = QtGui.QLabel(alignment=QtCore.Qt.AlignHCenter)
-        hlayout = QtGui.QHBoxLayout()
+        self.indicator = QtWidgets.QLabel(alignment=QtCore.Qt.AlignHCenter)
+        hlayout = QtWidgets.QHBoxLayout()
 
         layout.addWidget(self.indicator, alignment=QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
         layout.addLayout(hlayout)
 
-        self.backBtn = QtGui.QPushButton("<<<")
+        self.backBtn = QtWidgets.QPushButton("<<<")
         self.leftImg  = ImgDisplayer(600,600)
         self.rightImg = ImgDisplayer(600,600)
-        self.nextBtn = QtGui.QPushButton(">>>")
+        self.nextBtn = QtWidgets.QPushButton(">>>")
 
         self.backBtn.clicked.connect(self.displayBack)
         self.nextBtn.clicked.connect(self.displayNext)
@@ -369,7 +369,7 @@ def runExtractionOfAllSimilarPairs(folderPath, options=None, progressbar=None):
     return pairs
 
 def getByteComparisonPairs(files, progressbar=None):
-    print "==================== getByteComparisonPairs"
+    print("==================== getByteComparisonPairs")
     if progressbar is not None: progressbar.setLabel("Byte Comparison:")
     t0 = time.clock()
     wFiles = [(os.path.getsize(ff), ff) for ff in files]
@@ -387,7 +387,7 @@ def getByteComparisonPairs(files, progressbar=None):
 
     pairs = [(f0, f1) for f0, f1 in pairs if filecmp.cmp(f0,f1)]
     T = time.clock() - t0
-    print T, len(pairs)
+    print("%s %s" % (T, len(pairs)))
     return pairs
 
 
@@ -428,11 +428,11 @@ def _compareHisto(data):
 
 
 def getHistogramComparisonPairs(files, progressbar=None):
-    print "==================== getHistogramComparisonPairs"
+    print("==================== getHistogramComparisonPairs")
     if progressbar is not None: progressbar.setLabel("Histogram Comparison:")
     pool = Pool(processes=8)
     t0 = time.clock()
-    print "=== load images"
+    print("=== load images")
     if progressbar is not None: progressbar.setLabel("Histogram Comparison: Load images")
     progressbar.setValue(0.0)
     images = [ff for ff in files if os.path.splitext(ff)[1] in IMG_EXT]
@@ -441,16 +441,16 @@ def getHistogramComparisonPairs(files, progressbar=None):
     hfiles = []
     Ntotal = len(images)
     N = 100
-    for idx in range(Ntotal/N + 1):
+    for idx in range(int(Ntotal/N) + 1):
         hfiles.extend(pool.map(_computeHisto, images[N*idx:N*(idx+1)]))
         if progressbar is not None:
                 progressbar.setValue(idx*N*100.0/Ntotal)
 
     hfiles = [h for h in hfiles if h is not None]
     T = time.clock() - t0
-    print T, len(hfiles)
+    print("%s %s" % (T, len(hfiles)))
 
-    print "=== create pairs"
+    print("=== create pairs")
     if progressbar is not None: progressbar.setLabel("Histogram Comparison: create pairs")
     t0 = time.clock()
     pairsToTest = []
@@ -463,9 +463,9 @@ def getHistogramComparisonPairs(files, progressbar=None):
                 progressbar.setValue(idxi*100.0/Ntotal)
 
     T = time.clock() - t0
-    print T, len(pairsToTest)
+    print("%s %s" % (T, len(pairsToTest)))
 
-    print "=== comparison"
+    print("=== comparison")
     if progressbar is not None: progressbar.setLabel("Histogram Comparison: compare")
     t0 = time.clock()
 
@@ -474,7 +474,7 @@ def getHistogramComparisonPairs(files, progressbar=None):
     Ntotal = len(pairsToTest)
     N = 100000
     if Ntotal>0:
-        for idx in range(Ntotal/N + 1):
+        for idx in range(int(Ntotal/N) + 1):
             pairs.extend(pool.map(_compareHisto, pairsToTest[N*idx:N*(idx+1)]))
             if progressbar is not None:
                     progressbar.setValue(idx*N*100.0/Ntotal)
@@ -482,7 +482,7 @@ def getHistogramComparisonPairs(files, progressbar=None):
 
     pairs = [p for p in pairs if p is not None]
     T = time.clock() - t0
-    print T, len(pairs)
+    print("%s %s" % (T, len(pairs)))
 
     return pairs
 
@@ -490,11 +490,11 @@ def getHistogramComparisonPairs(files, progressbar=None):
 
 
 def getGIFHistogramComparisonPairs(files, progressbar=None):
-    print "==================== getGIFHistogramComparisonPairs"
+    print("==================== getGIFHistogramComparisonPairs")
     if progressbar is not None: progressbar.setLabel("GIF Histogram Comparison:")
     pool = Pool(processes=8)
     t0 = time.clock()
-    print "=== load images"
+    print("=== load images")
     if progressbar is not None: progressbar.setLabel("GIF Histogram Comparison: Load images")
     progressbar.setValue(0.0)
     #images = [ff for ff in files if os.path.splitext(ff)[1] in IMG_EXT]
@@ -504,16 +504,16 @@ def getGIFHistogramComparisonPairs(files, progressbar=None):
     hfiles = []
     Ntotal = len(gifimages)
     N = 50
-    for idx in range(Ntotal/N + 1):
+    for idx in range(int(Ntotal/N) + 1):
         hfiles.extend(pool.map(_computeGIFHisto, gifimages[N*idx:N*(idx+1)]))
         if progressbar is not None:
                 progressbar.setValue(idx*N*100.0/Ntotal)
 
     hfiles = [h for h in hfiles if h is not None]
     T = time.clock() - t0
-    print T, len(hfiles)
+    print("%s %s" % (T, len(hfiles)))
 
-    print "=== create pairs"
+    print("=== create pairs")
     if progressbar is not None: progressbar.setLabel("GIF Histogram Comparison: create pairs")
     t0 = time.clock()
     pairsToTest = []
@@ -526,9 +526,9 @@ def getGIFHistogramComparisonPairs(files, progressbar=None):
                 progressbar.setValue(idxi*100.0/Ntotal)
 
     T = time.clock() - t0
-    print T, len(pairsToTest)
+    print("%s %s" % (T, len(pairsToTest)))
 
-    print "=== comparison"
+    print("=== comparison")
     if progressbar is not None: progressbar.setLabel("GIF Histogram Comparison: compare")
     t0 = time.clock()
 
@@ -537,7 +537,7 @@ def getGIFHistogramComparisonPairs(files, progressbar=None):
     Ntotal = len(pairsToTest)
     N = 100000
     if Ntotal>0:
-        for idx in range(Ntotal/N + 1):
+        for idx in range(int(Ntotal/N) + 1):
             pairs.extend(pool.map(_compareHisto, pairsToTest[N*idx:N*(idx+1)]))
             if progressbar is not None:
                     progressbar.setValue(idx*N*100.0/Ntotal)
@@ -545,7 +545,7 @@ def getGIFHistogramComparisonPairs(files, progressbar=None):
 
     pairs = [p for p in pairs if p is not None]
     T = time.clock() - t0
-    print T, len(pairs)
+    print("%s %s" % (T, len(pairs)))
 
     return pairs
 
@@ -574,15 +574,15 @@ class ComputePairsThread(QtCore.QThread):
 
 
 
-class TitledProgressBar(QtGui.QWidget):
+class TitledProgressBar(QtWidgets.QWidget):
     def __init__(self):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
-        self.label = QtGui.QLabel()
+        self.label = QtWidgets.QLabel()
         self.label.setMinimumWidth(300)
-        self.progressBar = QtGui.QProgressBar()
+        self.progressBar = QtWidgets.QProgressBar()
         self.progressBar.setMinimumWidth(300)
 
         layout.addWidget(self.label)
@@ -599,10 +599,10 @@ class TitledProgressBar(QtGui.QWidget):
 
 
 
-class SimilarChecker(QtGui.QWidget):
+class SimilarChecker(QtWidgets.QWidget):
     def __init__(self):
-        QtGui.QWidget.__init__(self)
-        layout = QtGui.QVBoxLayout()
+        QtWidgets.QWidget.__init__(self)
+        layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
         self.folderSelecter = FolderSelecter()
@@ -631,7 +631,7 @@ class SimilarChecker(QtGui.QWidget):
         self.comparisonDisplayer.setPairs(pairs)
         self.progressBar.close()
         if len(pairs)==0:
-            QtGui.QMessageBox.information(self, "Result", "no similar files found")
+            QtWidgets.QMessageBox.information(self, "Result", "no similar files found")
 
 
 def parseConfigFile(cfgFilePath):
@@ -639,7 +639,8 @@ def parseConfigFile(cfgFilePath):
         with open(cfgFilePath, 'r') as f:
             config_string = '[section]\n' + f.read()
         config = configparser.ConfigParser()
-        config.read_string(unicode(config_string))
+        #config.read_string(unicode(config_string))
+        config.read_string(config_string)
         return config["section"]
     else:
         return {}
@@ -660,7 +661,7 @@ if __name__ == "__main__":
         init_folder = args.init_folder
 
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     w = SimilarChecker()
     w.move(50,50)
     w.folderSelecter.edit.setText(init_folder)
