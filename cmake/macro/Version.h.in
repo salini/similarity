@@ -1,0 +1,33 @@
+#ifndef _@UP_PROJECT_NAME@_VERSION_H_
+#define _@UP_PROJECT_NAME@_VERSION_H_
+
+/////////////////////////////////////////////////////////////////////////////////////
+// WARNING: This file have been generated automatically, it should not be modified //
+// If needed, better to change the Version.h.in file in the source code            //
+//                                                                                 //
+// This file is greatly inspired from the OpenSceneGraph osg/Version.in file       //
+// http://www.openscenegraph.org/                                                  //
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+#define @UP_PROJECT_NAME@_VERSION_MAJOR    ${${UP_PROJECT_NAME}_VERSION_MAJOR}
+#define @UP_PROJECT_NAME@_VERSION_MINOR    ${${UP_PROJECT_NAME}_VERSION_MINOR}
+#define @UP_PROJECT_NAME@_VERSION_PATCH    ${${UP_PROJECT_NAME}_VERSION_PATCH}
+
+
+#define @UP_PROJECT_NAME@_MIN_VERSION_REQUIRED    (MAJOR, MINOR, PATCH)     ((@UP_PROJECT_NAME@_VERSION_MAJOR>MAJOR) || (@UP_PROJECT_NAME@_VERSION_MAJOR==MAJOR && (@UP_PROJECT_NAME@_VERSION_MINOR>MINOR || (@UP_PROJECT_NAME@_VERSION_MINOR==MINOR && @UP_PROJECT_NAME@_VERSION_PATCH>=PATCH))))
+#define @UP_PROJECT_NAME@_VERSION_LESS_THAN       (MAJOR, MINOR, PATCH)     ((@UP_PROJECT_NAME@_VERSION_MAJOR<MAJOR) || (@UP_PROJECT_NAME@_VERSION_MAJOR==MAJOR && (@UP_PROJECT_NAME@_VERSION_MINOR<MINOR || (@UP_PROJECT_NAME@_VERSION_MINOR==MINOR && @UP_PROJECT_NAME@_VERSION_PATCH< PATCH))))
+#define @UP_PROJECT_NAME@_VERSION_LESS_OR_EQUAL   (MAJOR, MINOR, PATCH)     ((@UP_PROJECT_NAME@_VERSION_MAJOR<MAJOR) || (@UP_PROJECT_NAME@_VERSION_MAJOR==MAJOR && (@UP_PROJECT_NAME@_VERSION_MINOR<MINOR || (@UP_PROJECT_NAME@_VERSION_MINOR==MINOR && @UP_PROJECT_NAME@_VERSION_PATCH<=PATCH))))
+#define @UP_PROJECT_NAME@_VERSION_GREATER_THAN    (MAJOR, MINOR, PATCH)     ((@UP_PROJECT_NAME@_VERSION_MAJOR>MAJOR) || (@UP_PROJECT_NAME@_VERSION_MAJOR==MAJOR && (@UP_PROJECT_NAME@_VERSION_MINOR>MINOR || (@UP_PROJECT_NAME@_VERSION_MINOR==MINOR && @UP_PROJECT_NAME@_VERSION_PATCH> PATCH))))
+#define @UP_PROJECT_NAME@_VERSION_GREATER_OR_EQUAL(MAJOR, MINOR, PATCH)     ((@UP_PROJECT_NAME@_VERSION_MAJOR>MAJOR) || (@UP_PROJECT_NAME@_VERSION_MAJOR==MAJOR && (@UP_PROJECT_NAME@_VERSION_MINOR>MINOR || (@UP_PROJECT_NAME@_VERSION_MINOR==MINOR && @UP_PROJECT_NAME@_VERSION_PATCH>=PATCH))))
+
+
+
+std::string getVersion() {
+    char _version[128];
+    sprintf(_version,"%d.%d.%d",@UP_PROJECT_NAME@_VERSION_MAJOR, @UP_PROJECT_NAME@_VERSION_MINOR, @UP_PROJECT_NAME@_VERSION_PATCH);
+    return _version;
+}
+
+
+#endif

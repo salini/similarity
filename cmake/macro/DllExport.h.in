@@ -1,0 +1,23 @@
+//WARNING: this file has been generated automatically through
+//         the cmake configure_file macro. You should not modify
+//         this file directly; change your cmake parameters instead.
+
+
+#ifndef _@DLLEXPORT_LIB_NAME_CAPITAL@_DLLEXPORT_H_
+#define _@DLLEXPORT_LIB_NAME_CAPITAL@_DLLEXPORT_H_
+
+// DEFINE DLL EXPORT IF COMPILING DLL (DYNAMIC LIB) IN WINDOWS
+
+#if defined (WIN32)  &&  defined(@DLL_EXPORT_PREPROCESSOR_DYN_DEFINITION_NAME@)
+    #if defined(@DLLEXPORT_LIB_NAME@_EXPORTS) // should have been defined by Cmake if needed
+        #define  @DLLEXPORT_LIB_NAME_CAPITAL@_EXPORT __declspec(dllexport)
+    #else
+        #define  @DLLEXPORT_LIB_NAME_CAPITAL@_EXPORT __declspec(dllimport)
+    #endif
+#else  // if not WIN32
+    #define @DLLEXPORT_LIB_NAME_CAPITAL@_EXPORT
+#endif
+
+
+
+#endif
