@@ -26,6 +26,10 @@ basicSimiliWidget::basicSimiliWidget()
 { 
     pimpl->ui.setupUi(this);
     pimpl->setup();
+
+	connect(pimpl->ui.exitBtn, SIGNAL(clicked()), this, SLOT(exitBtn_clicked()));
+	connect(pimpl->ui.toggleBoxBtn, SIGNAL(clicked()), this, SLOT(toggleBoxBtn_clicked()));
+	connect(pimpl->ui.displayMsgBtn, SIGNAL(clicked()), this, SLOT(displayMsgBtn_clicked()));
 }
 
 basicSimiliWidget::~basicSimiliWidget() {
@@ -33,3 +37,15 @@ basicSimiliWidget::~basicSimiliWidget() {
 }
 
 
+void basicSimiliWidget::exitBtn_clicked() {
+	QApplication::quit();
+}
+
+void basicSimiliWidget::toggleBoxBtn_clicked() {
+	pimpl->ui.checkBox->toggle();
+}
+
+void basicSimiliWidget::displayMsgBtn_clicked() {
+	QString txt = pimpl->ui.lineEdit->text();
+	pimpl->ui.label->setText(txt);
+}

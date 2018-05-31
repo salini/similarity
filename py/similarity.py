@@ -74,31 +74,24 @@ class VLine(QtWidgets.QFrame):
         self.setFrameShadow(QtWidgets.QFrame.Sunken)
 
 
-class FolderSelecter(QtWidgets.QWidget):
+class FolderSelecterWidget(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QHBoxLayout()
         self.setLayout(layout)
 
-        self.action = None
         self.edit = QtWidgets.QLineEdit()
         self.browseBtn = QtWidgets.QPushButton("browse")
-        self.startBtn = QtWidgets.QPushButton("start")
 
         self.browseBtn.clicked.connect(self.browseBtn_clicked)
-        self.startBtn.clicked.connect(self.startBtn_clicked)
 
         layout.addWidget(self.edit)
         layout.addWidget(self.browseBtn)
-        layout.addWidget(self.startBtn)
 
         self.edit.setText(os.environ["USERPROFILE"])
 
-    def setAction(self, action):
-        self.action = action
-
-    def startBtn_clicked(self):
-        self.action(str(self.edit.text()))
+    def getFolder(self):
+        return str(self.edit.text())
 
     def browseBtn_clicked(self):
         res = QtWidgets.QFileDialog.getExistingDirectory(
@@ -106,14 +99,15 @@ class FolderSelecter(QtWidgets.QWidget):
             "select folder",
             str(self.edit.text())
         )
-        if res.isEmpty():
+        res = str(res)
+        if len(res)==0:
             return
         else:
             self.edit.setText(res)
 
 
 
-class OptionSelecter(QtWidgets.QWidget):
+class OptionSelecterWidget(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QHBoxLayout()
@@ -164,7 +158,7 @@ class QGIFMovie(QtGui.QImageReader):
 
 
 
-class ImageViewer(QtWidgets.QLabel):
+class ImageViewerWidget(QtWidgets.QLabel):
     def __init__(self, *args, **kwargs):
         QtWidgets.QLabel.__init__(self, *args, **kwargs)
         self.original_pixmap = QtGui.QPixmap()
@@ -188,7 +182,7 @@ class ImageViewer(QtWidgets.QLabel):
 
 
 
-class ImgDisplayer(QtWidgets.QWidget):
+class ImgDisplayerWidget(QtWidgets.QWidget):
     def __init__(self, w, h):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QVBoxLayout()
@@ -202,7 +196,7 @@ class ImgDisplayer(QtWidgets.QWidget):
         self.indicator.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         self.indicator.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
 
-        self.img = ImageViewer(alignment=QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+        self.img = ImageViewerWidget(alignment=QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
         self.img.setMinimumSize(w, h)
         self.img.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
 
@@ -267,7 +261,7 @@ class ImgDisplayer(QtWidgets.QWidget):
 
 
 
-class ComparisonDisplayer(QtWidgets.QWidget):
+class ComparisonDisplayerWidget(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QVBoxLayout()
@@ -281,9 +275,11 @@ class ComparisonDisplayer(QtWidgets.QWidget):
         layout.addLayout(hlayout)
 
         self.backBtn = QtWidgets.QPushButton("<<<")
-        self.leftImg  = ImgDisplayer(600,600)
-        self.rightImg = ImgDisplayer(600,600)
+        self.backBtn.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.leftImg  = ImgDisplayerWidget(600,600)
+        self.rightImg = ImgDisplayerWidget(600,600)
         self.nextBtn = QtWidgets.QPushButton(">>>")
+        self.nextBtn.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
         self.backBtn.clicked.connect(self.displayBack)
         self.nextBtn.clicked.connect(self.displayNext)
@@ -599,26 +595,30 @@ class TitledProgressBar(QtWidgets.QWidget):
 
 
 
-class SimilarChecker(QtWidgets.QWidget):
+class SimilarCheckerWidget(QtWidgets.QWidget):
     def __init__(self):
         QtWidgets.QWidget.__init__(self)
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
-        self.folderSelecter = FolderSelecter()
-        self.optionSelecter = OptionSelecter()
-        self.comparisonDisplayer= ComparisonDisplayer()
+        self.folderSelecter = FolderSelecterWidget()
+        self.optionSelecter = OptionSelecterWidget()
+        self.startBtn = QtWidgets.QPushButton("start")
+        self.comparisonDisplayer= ComparisonDisplayerWidget()
 
         layout.addWidget(self.folderSelecter)
+        layout.addWidget(self.startBtn)
         layout.addWidget(self.optionSelecter)
         layout.addWidget(self.comparisonDisplayer)
 
         self.progressBar = TitledProgressBar()
 
-        self.folderSelecter.setAction(self.processFolder)
+        #self.folderSelecter.setAction(self.processFolder)
+        self.startBtn.clicked.connect(self.processFolder)
 
 
-    def processFolder(self, folderPath):
+    def processFolder(self):
+        folderPath = self.folderSelecter.getFolder()
         options = self.optionSelecter.getOptions()
 
         self.computePairsThread = ComputePairsThread(self, folderPath, options, self.progressBar)
@@ -662,7 +662,7 @@ if __name__ == "__main__":
 
 
     app = QtWidgets.QApplication(sys.argv)
-    w = SimilarChecker()
+    w = SimilarCheckerWidget()
     w.move(50,50)
     w.folderSelecter.edit.setText(init_folder)
     w.show()

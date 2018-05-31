@@ -24,7 +24,9 @@ private:
     basicSimiliWidget(const basicSimiliWidget& other);
 
 private slots:
-
+	void exitBtn_clicked();
+	void toggleBoxBtn_clicked();
+	void displayMsgBtn_clicked();
 };
 
 } // namespace simili
