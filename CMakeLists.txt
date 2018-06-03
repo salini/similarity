@@ -39,8 +39,11 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(OpenCV  REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIR})
 
-
-find_package (Boost REQUIRED COMPONENTS system) #program_options)
+if(WIN32)
+    find_package (Boost REQUIRED COMPONENTS system)
+else()
+    find_package (Boost REQUIRED COMPONENTS system  filesystem  program_options)
+endif()
 include_directories (${Boost_INCLUDE_DIRS})
 link_directories (${Boost_LIBRARY_DIRS})
 
