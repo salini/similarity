@@ -11,7 +11,9 @@ SETUP_QT_LIBRARY(simili   H_FILES   CPP_FILES   UI_FILES)
 
 
 TARGET_LINK_LIBRARIES( simili
+    simili_algorithm
     Qt5::Widgets
     Qt5::Core
+    ${OpenCV_LIBRARIES}
 )
 

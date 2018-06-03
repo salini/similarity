@@ -2,6 +2,8 @@
 #define _SIMILI_SIMILARCHECKERWIDGET_H_
 
 #include "DllExport.h"
+#include "simili_algorithm/Utils.h"
+
 #include <QtWidgets>
 
 namespace simili {
@@ -27,7 +29,9 @@ private:
 private slots:
 	void processFolder();
 
-	void progress_update(QString text, int value);
+	void progress_update(QString text);
+	void progress_update(int value);
+	void error_raised(QString error);
 	void computation_finished();
 };
 

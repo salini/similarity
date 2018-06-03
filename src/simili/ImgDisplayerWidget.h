@@ -12,8 +12,10 @@ Q_OBJECT
 
 public:
     ImgDisplayerWidget(size_t minWidth=600, size_t minHeight=600);
-
     virtual ~ImgDisplayerWidget();
+
+	void clearImg();
+	void setImg(const std::string& filePath);
 
 
 private:
@@ -22,6 +24,7 @@ private:
 
 	//prevent class copy
     ImgDisplayerWidget(const ImgDisplayerWidget& other);
+
 
 private slots:
 void delBtn_clicked();

@@ -2,6 +2,8 @@
 #define _SIMILI_COMPARISONDISPLAYERWIDGET_H_
 
 #include "DllExport.h"
+#include "simili_algorithm/Utils.h"
+
 #include <QtWidgets>
 
 namespace simili {
@@ -13,6 +15,9 @@ Q_OBJECT
 public:
     ComparisonDisplayerWidget();
     virtual ~ComparisonDisplayerWidget();
+
+	void setFilePairs(const simili_algorithm::FilePairs& filePairs);
+	void displayPair(size_t pair_index);
 
 
 private:

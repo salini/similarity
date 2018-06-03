@@ -1,18 +1,22 @@
 
 #include "ComputePairsThread.h"
 
+#include "simili_algorithm/SimilarExtraction.h"
+
 #include <boost/format.hpp>
 
 #include <thread>
-
+#include <stdexcept>
 
 using namespace simili;
-
+using namespace simili_algorithm;
 
 struct ComputePairsThread::Pimpl {
 
 	std::string folderPath;
 	std::map<std::string, bool> options;
+
+	FilePairs filepairs;
 
     Pimpl() {
     }
@@ -38,11 +42,27 @@ void ComputePairsThread::init(const std::string& folderPath, std::map<std::strin
 }
 
 
-
 void ComputePairsThread::run() {
-	for (size_t idx = 0; idx < 5; idx++) {
+	/*
+	for (int idx = 0; idx < 5; idx++) {
 		emit progress_update(QString(boost::str(boost::format("AAA '%i'") % idx).c_str()), idx * 20);
 		std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(1000));
 	}
+	*/
+	emit progress_update("INIT");
+	emit progress_update(0);
+	try {
+		pimpl->filepairs = SimilarExtraction::extractSimilars(pimpl->folderPath, pimpl->options);
+	}
+	catch (std::runtime_error& e) {
+		emit error_raised(e.what());
+	}
+	
+	emit progress_update(100);
+
 	emit computation_finished();
+}
+
+FilePairs ComputePairsThread::getLastResult() {
+	return pimpl->filepairs;
 }

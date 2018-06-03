@@ -9,6 +9,7 @@
 
 
 using namespace simili;
+using namespace simili_algorithm;
 using namespace std;
 
 
@@ -45,7 +46,9 @@ SimilarCheckerWidget::SimilarCheckerWidget()
 	setLayout(&pimpl->layout);
 
 	connect(&pimpl->startBtn, SIGNAL(clicked()), this, SLOT(processFolder()));
-	connect(&pimpl->computePairsThread, SIGNAL(progress_update(QString, int)), this, SLOT(progress_update(QString, int)));
+	connect(&pimpl->computePairsThread, SIGNAL(progress_update(QString)), this, SLOT(progress_update(QString)));
+	connect(&pimpl->computePairsThread, SIGNAL(progress_update(int)), this, SLOT(progress_update(int)));
+	connect(&pimpl->computePairsThread, SIGNAL(error_raised(QString)), this, SLOT(error_raised(QString)));
 	connect(&pimpl->computePairsThread, SIGNAL(computation_finished()), this, SLOT(computation_finished()));
 }
 
@@ -68,12 +71,22 @@ void SimilarCheckerWidget::processFolder() {
 }
 
 
-void SimilarCheckerWidget::progress_update(QString text, int value) {
+void SimilarCheckerWidget::progress_update(QString text) {
 	pimpl->progressBar.setLabel(text);
+}
+
+void SimilarCheckerWidget::progress_update(int value) {
 	pimpl->progressBar.setValue(value);
 }
 
-void SimilarCheckerWidget::computation_finished() {
-	pimpl->progressBar.close();
+void SimilarCheckerWidget::error_raised(QString error) {
+	QMessageBox::warning(this, "extraction error", error, QMessageBox::StandardButton::Close, QMessageBox::StandardButton::NoButton);
 }
 
+
+void SimilarCheckerWidget::computation_finished() {
+	pimpl->progressBar.close();
+
+	FilePairs filePairs = pimpl->computePairsThread.getLastResult();
+	pimpl->comparisonDisplayerWidget.setFilePairs(filePairs);
+}

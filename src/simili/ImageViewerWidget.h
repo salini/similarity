@@ -14,6 +14,14 @@ public:
     ImageViewerWidget();
     virtual ~ImageViewerWidget();
 
+	void setImage(const std::string& filePath);
+	size_t getOriginalWidth() const;
+	size_t getOriginalHeight() const;
+
+	virtual void resizeEvent(QResizeEvent *event);
+
+	virtual void clear();
+
 
 private:
     struct Pimpl;
@@ -21,6 +29,8 @@ private:
 
 	//prevent class copy
     ImageViewerWidget(const ImageViewerWidget& other);
+
+	void displayImage();
 
 private slots:
 
