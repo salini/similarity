@@ -36,7 +36,6 @@ struct ImgDisplayerWidget::Pimpl {
 		, delBtn("delete")
 		, gifMovie(img)
 		, aviMovie(img)
-		//, movie(NULL)
 	{
 		layout.addWidget(&indicator, 0, Qt::AlignHCenter);
 		layout.addWidget(&img);
@@ -57,13 +56,6 @@ struct ImgDisplayerWidget::Pimpl {
     }
 
 	void clearPixmapMovie() {
-		/*
-		self.img.setPixmap(QtGui.QPixmap())
-		if self.movie is not None :
-			self.movie.stop()
-			self.movie = None
-			self.img.setMovie(QtGui.QMovie())
-			*/
 		img.clear();
 		gifMovie.clear();
 		aviMovie.clear();
@@ -78,30 +70,6 @@ struct ImgDisplayerWidget::Pimpl {
 	}
 
 	void setImg(const std::string& filePath) {
-		/*
-		self.clearImg()
-        self.imgPath = imgPath
-        ext = os.path.splitext(imgPath)[1]
-
-        if ext in IMG_EXT:
-            self.img.setImage(imgPath)
-            w,h = self.img.getOriginalSize()
-
-        elif ext in GIF_EXT:
-            self.movie = QGIFMovie(self.img, imgPath)
-            self.movie.start()
-            w, h = self.movie.getOriginalSize()
-
-        elif ext in MOV_EXT:
-            self.movie = QFFMPEGMovie(self.img, imgPath)
-            self.movie.start()
-            w, h = self.movie.getOriginalSize()
-        else:
-            w,h = 0,0
-
-        self.indicator.setText("{0} [{w}x{h} {1:.2f}Mo]".format(imgPath, os.path.getsize(imgPath)*1e-6, w=w, h=h))
-		*/
-
 		clearImg();
 		imgPath = filePath;
 		std::string ext = extension(imgPath);
@@ -125,7 +93,6 @@ struct ImgDisplayerWidget::Pimpl {
 			h = img.getOriginalHeight();
 		}
 		
-
 		indicator.setText(boost::str(boost::format("%s [%ix%i %.2f Mo]") % imgPath % w % h % (simili_algorithm::getFileSize(imgPath)*1e-6) ).c_str());
 	}
 };
@@ -144,9 +111,18 @@ ImgDisplayerWidget::~ImgDisplayerWidget() {
     delete pimpl;
 }
 
-
+#include <cstdio>
 void ImgDisplayerWidget::delBtn_clicked() {
+	std::string imgPath = pimpl->imgPath;
+	clearImg();
+	std::cout << boost::str(boost::format("REMOVE file '%s'") % imgPath) << std::endl;
 
+	if (std::remove(imgPath.c_str()) != 0)
+		std::cout << "Error deleting file"<<std::endl;
+	else
+		std::cout << "File successfully deleted"<<std::endl;
+	
+	emit(fileDeleted(imgPath.c_str()));
 }
 
 void ImgDisplayerWidget::clearImg() {

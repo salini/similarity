@@ -6,11 +6,10 @@ using namespace simili;
 
 struct ImageViewerWidget::Pimpl {
 
-	QImageReader	imageReader;
 	QPixmap			originalPixmap;
 
     Pimpl() {;
-		imageReader.setDecideFormatFromContent(true);
+		
     }
 
 	~Pimpl() {
@@ -20,6 +19,8 @@ struct ImageViewerWidget::Pimpl {
 	}
 
 	void setImage(const std::string& filePath) {
+		QImageReader	imageReader;
+		imageReader.setDecideFormatFromContent(true);
 		imageReader.setFileName(filePath.c_str());
 		originalPixmap = QPixmap::fromImageReader(&imageReader);
 	}

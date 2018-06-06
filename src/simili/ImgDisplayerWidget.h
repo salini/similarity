@@ -28,6 +28,9 @@ private:
 
 private slots:
 void delBtn_clicked();
+
+signals:
+	void fileDeleted(QString filePath);
 };
 
 } // namespace simili

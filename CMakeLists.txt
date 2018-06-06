@@ -40,7 +40,7 @@ find_package(OpenCV  REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIR})
 
 if(WIN32)
-    find_package (Boost REQUIRED COMPONENTS system)
+    find_package (Boost REQUIRED COMPONENTS system filesystem)
 else()
     find_package (Boost REQUIRED COMPONENTS system  filesystem  program_options)
 endif()

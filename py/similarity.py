@@ -212,7 +212,7 @@ class ImgDisplayerWidget(QtWidgets.QWidget):
         self.clearPixmapMovie()
         print("delete %s" % self.indicator.text())
         send2trash.send2trash(self.imgPath)
-        self.action()
+        self.action(self.imgPath)
 
     def setDeleteAction(self, action):
         self.action = action
@@ -336,7 +336,17 @@ class ComparisonDisplayerWidget(QtWidgets.QWidget):
         self.nextBtn.setEnabled(self.index+1 < len(self.pairs))
 
 
-    def deleteAction(self):
+    def deleteAction(self, imgPath):
+        l_img, r_img = self.pairs[self.index]
+        assert( imgPath == l_img or imgPath == r_img)
+        substitute  = l_img if imgPath == r_img else r_img
+
+        for idx, p  in enumerate(self.pairs):
+            if p[0] == imgPath:
+                self.pairs[idx] = (substitute, p[1])
+            if p[1] == imgPath:
+                self.pairs[idx] = (p[0], substitute)
+
         self.pairs.pop(self.index)
         self.displayPair(self.index)
 

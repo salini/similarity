@@ -14,18 +14,20 @@ struct OptionSelecterWidget::Pimpl {
 
 	QHBoxLayout layout;
 
-	std::vector< std::unique_ptr<QCheckBox> > checkboxes;
+	std::map< std::string, std::unique_ptr<QCheckBox> > checkboxes;
 
     Pimpl() {
-		checkboxes.push_back(std::unique_ptr<QCheckBox>(new QCheckBox("byte comparison")));
-		checkboxes.push_back(std::unique_ptr<QCheckBox>(new QCheckBox("img histogram comparison")));
-		checkboxes.push_back(std::unique_ptr<QCheckBox>(new QCheckBox("gif histogram comparison")));
+		checkboxes["byte comparison"]          = std::unique_ptr<QCheckBox>(new QCheckBox("byte comparison"));
+		checkboxes["img histogram comparison"] = std::unique_ptr<QCheckBox>(new QCheckBox("img histogram comparison"));
+		checkboxes["gif histogram comparison"] = std::unique_ptr<QCheckBox>(new QCheckBox("gif histogram comparison"));
 
 		layout.addStretch();
-		for (std::vector< std::unique_ptr<QCheckBox> >::iterator it = checkboxes.begin(); it != checkboxes.end(); ++it) {
-			layout.addWidget((*it).get());
+		for (std::map< std::string, std::unique_ptr<QCheckBox> >::iterator it = checkboxes.begin(); it != checkboxes.end(); ++it) {
+			layout.addWidget((*it).second.get());
 		}
 		layout.addStretch();
+
+		checkboxes["byte comparison"]->setChecked(true);
     }
 
 	~Pimpl() {
@@ -46,8 +48,8 @@ OptionSelecterWidget::~OptionSelecterWidget() {
 std::map<std::string, bool> OptionSelecterWidget::getOptions() const {
 	std::map<std::string, bool> options;
 
-	for (std::vector< std::unique_ptr<QCheckBox> >::iterator it = pimpl->checkboxes.begin(); it != pimpl->checkboxes.end(); ++it) {
-		options[(*it)->text().toStdString()] = (*it)->isChecked();
+	for (std::map< std::string, std::unique_ptr<QCheckBox> >::iterator it = pimpl->checkboxes.begin(); it != pimpl->checkboxes.end(); ++it) {
+		options[(*it).first] = (*it).second->isChecked();
 	}
 
 	return options;

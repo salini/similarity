@@ -54,12 +54,6 @@ FilePairs SimilarByteComparison::extractSimilars(const std::vector<std::string>&
 	}
 
 	std::sort(results.begin(), results.end());
-
-	/*
-	for (std::vector<FileSizeStruct>::const_iterator it = results.begin(); it != results.end(); it++) {
-		std::cout << (*it).size << " // " << (*it).filePath << std::endl;
-	}
-	*/
 	
 	FilePairs filePairs;
 	for (std::vector<FileSizeStruct>::const_iterator it = results.begin(); it != results.end()-1; it++) {
@@ -67,6 +61,17 @@ FilePairs SimilarByteComparison::extractSimilars(const std::vector<std::string>&
 			filePairs.push_back(std::make_pair((*it).filePath, (*(it + 1)).filePath));
 		}
 	}
-	return filePairs;
+
+
+	std::cout << "===========================\n";
+	FilePairs filePairs2;
+	for (FilePairs::const_iterator it = filePairs.begin(); it != filePairs.end(); it++) {
+		if (filesAreEqual((*it).first, (*it).second)) {
+			std::cout << "OK: " << (*it).first << "   //   " << (*it).second << std::endl;
+			filePairs2.push_back((*it));
+		}
+	}
+
+	return filePairs2;
 }
 

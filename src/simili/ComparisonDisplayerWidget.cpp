@@ -98,6 +98,9 @@ ComparisonDisplayerWidget::ComparisonDisplayerWidget()
 
 	connect(&pimpl->backBtn, SIGNAL(clicked()), this, SLOT(displayBack()));
 	connect(&pimpl->nextBtn, SIGNAL(clicked()), this, SLOT(displayNext()));
+
+	connect(&pimpl->leftImg, SIGNAL(fileDeleted(QString)), this, SLOT(fileDeleted(QString)));
+	connect(&pimpl->rightImg, SIGNAL(fileDeleted(QString)), this, SLOT(fileDeleted(QString)));
 }
 
 ComparisonDisplayerWidget::~ComparisonDisplayerWidget() {
@@ -124,3 +127,31 @@ void ComparisonDisplayerWidget::displayPair(size_t pair_index) {
 	pimpl->displayPair(pair_index);
 }
 
+#include <iostream> //TODO to delete
+void ComparisonDisplayerWidget::fileDeleted(QString filePath) {
+	std::string fPath = filePath.toStdString();
+	std::string substitute;
+
+	FilePair& fp = pimpl->filePairs[pimpl->index];
+	if (fPath == fp.first) {
+		substitute = fp.second;
+	}
+	else if (fPath == fp.second) {
+		substitute = fp.first;
+	}
+	else {
+		std::cout << "Cannot find element in pair; cannot substitute\n";
+	}
+
+	for (FilePairs::iterator it = pimpl->filePairs.begin(); it != pimpl->filePairs.end(); it++) {
+		if ((*it).first == fPath) {
+			(*it).first = substitute;
+		}
+		if ((*it).second == fPath) {
+			(*it).second = substitute;
+		}
+	}
+		
+	pimpl->filePairs.erase(pimpl->filePairs.begin()+pimpl->index);
+	displayPair(pimpl->index);
+}

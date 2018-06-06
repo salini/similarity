@@ -30,6 +30,7 @@ private:
 private slots:
 	void displayBack();
 	void displayNext();
+	void fileDeleted(QString FilePath);
 };
 
 } // namespace simili

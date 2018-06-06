@@ -43,12 +43,6 @@ void ComputePairsThread::init(const std::string& folderPath, std::map<std::strin
 
 
 void ComputePairsThread::run() {
-	/*
-	for (int idx = 0; idx < 5; idx++) {
-		emit progress_update(QString(boost::str(boost::format("AAA '%i'") % idx).c_str()), idx * 20);
-		std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(1000));
-	}
-	*/
 	emit progress_update("INIT");
 	emit progress_update(0);
 	try {

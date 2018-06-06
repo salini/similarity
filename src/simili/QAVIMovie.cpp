@@ -42,6 +42,9 @@ struct MovieHandler {
 			vid >> frame;
 		}
 		pix = QPixmap::fromImage(QImage((unsigned char*)frame.data, frame.cols, frame.rows, QImage::Format_RGB888).rgbSwapped());
+
+		//static int idx;
+		//std::cout << idx++ <<"\n";
 	}
 
 	QPixmap currentPixmap() {
@@ -70,10 +73,12 @@ struct QAVIMovie::Pimpl {
     Pimpl(QLabel& label_)
 		: label(label_)
 		, vid(NULL)
+		, timer(&label)
 	{
     }
 
 	~Pimpl() {
+		deleteMovie();
     }
 
 	void deleteMovie() {
@@ -84,7 +89,6 @@ struct QAVIMovie::Pimpl {
 		original_width = 0;
 		original_height = 0;
 		fps = 1;
-		timer.stop();
 	}
 
 
@@ -99,11 +103,12 @@ struct QAVIMovie::Pimpl {
 			original_width = vid->width();
 			original_height = vid->height();
 			fps = vid->fps;
+			timer.setInterval(1000.0 / fps);
 		}
 	}
 
 	void start() {
-		timer.start(1000.0 / fps);
+		timer.start();
 	}
 
 	void stop() {
@@ -115,7 +120,7 @@ struct QAVIMovie::Pimpl {
 QAVIMovie::QAVIMovie(QLabel& label)
     : pimpl( new Pimpl(label) )
 { 
-
+	connect(&pimpl->timer, SIGNAL(timeout()), this, SLOT(updatePixmap()));
 }
 
 QAVIMovie::~QAVIMovie() {
@@ -125,7 +130,6 @@ QAVIMovie::~QAVIMovie() {
 
 void QAVIMovie::setAVI(const std::string& filePath) {
 	pimpl->setNewMovie(filePath);
-	connect(&pimpl->timer, SIGNAL(timeout()), this, SLOT(updatePixmap()));
 }
 
 void QAVIMovie::updatePixmap() {
