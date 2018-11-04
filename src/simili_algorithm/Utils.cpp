@@ -6,9 +6,11 @@
 #include <boost/range/iterator_range.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
 
+#include <sys/stat.h>
+
+
 using namespace boost::filesystem;
 namespace io = boost::iostreams;
-
 
 
 std::vector<std::string> simili_algorithm::extractFilesFromFolder(const std::string& folderPath) {

@@ -29,8 +29,8 @@ struct ComparisonDisplayerWidget::Pimpl {;
 
     Pimpl()
 		: backBtn("<<<")
-		, leftImg(600, 600)
-		, rightImg(600, 600)
+		, leftImg(400, 400)
+		, rightImg(400, 400)
 		, nextBtn(">>>")
 	{
 		layout.addWidget(&indicator, 0, Qt::AlignCenter);
@@ -93,7 +93,7 @@ struct ComparisonDisplayerWidget::Pimpl {;
 
 ComparisonDisplayerWidget::ComparisonDisplayerWidget()
     : pimpl( new Pimpl() )
-{ 
+{
 	setLayout(&pimpl->layout);
 
 	connect(&pimpl->backBtn, SIGNAL(clicked()), this, SLOT(displayBack()));
@@ -151,7 +151,7 @@ void ComparisonDisplayerWidget::fileDeleted(QString filePath) {
 			(*it).second = substitute;
 		}
 	}
-		
+
 	pimpl->filePairs.erase(pimpl->filePairs.begin()+pimpl->index);
 	displayPair(pimpl->index);
 }

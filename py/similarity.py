@@ -88,7 +88,8 @@ class FolderSelecterWidget(QtWidgets.QWidget):
         layout.addWidget(self.edit)
         layout.addWidget(self.browseBtn)
 
-        self.edit.setText(os.environ["USERPROFILE"])
+        user_root_path = os.environ["USERPROFILE"] if os.name=="nt" else os.environ["HOME"]
+        self.edit.setText(user_root_path)
 
     def getFolder(self):
         return str(self.edit.text())
@@ -276,8 +277,8 @@ class ComparisonDisplayerWidget(QtWidgets.QWidget):
 
         self.backBtn = QtWidgets.QPushButton("<<<")
         self.backBtn.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.leftImg  = ImgDisplayerWidget(600,600)
-        self.rightImg = ImgDisplayerWidget(600,600)
+        self.leftImg  = ImgDisplayerWidget(400,400)
+        self.rightImg = ImgDisplayerWidget(400,400)
         self.nextBtn = QtWidgets.QPushButton(">>>")
         self.nextBtn.setSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
@@ -675,6 +676,6 @@ if __name__ == "__main__":
     w = SimilarCheckerWidget()
     w.move(50,50)
     w.folderSelecter.edit.setText(init_folder)
-    w.show()
+    w.showMaximized()
     res = app.exec_()
 
