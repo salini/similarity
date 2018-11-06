@@ -11,7 +11,6 @@ else()
     set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
 endif()
 
-
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_SOURCE_DIR}/cmake/macro")
 include(macroUtils)
 include(macroQt)
@@ -24,17 +23,10 @@ SET_VERSION(0 1 0)
 # FIND DEPENDENCIES #
 #                   #
 #####################
-
-
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOUIC ON) # Create code from a list of Qt designer ui files
 set(CMAKE_INCLUDE_CURRENT_DIR ON)  # Find includes in corresponding build directories
-
-#set(CMAKE_PREFIX_PATH  "D:/Qt/5.11.2/msvc2015_64/lib/cmake/Qt5")
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-#include_directories(${Qt5Core_INCLUDE_DIR})
-#include_directories(${Qt5Widgets_INCLUDE_DIR})
-#add_definitions(${Qt5Widgets_DEFINITIONS})
 
 find_package(OpenCV  REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -46,12 +38,6 @@ else()
 endif()
 include_directories (${Boost_INCLUDE_DIRS})
 link_directories (${Boost_LIBRARY_DIRS})
-
-message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")
-message(STATUS "Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIRS}")
-message(STATUS "Boost_LIBRARIES ${Boost_LIBRARIES}")
-
-
 
 ##############################
 #                            #
@@ -71,7 +57,7 @@ add_definitions(-DDEV_RESOURCES_DATA_PATH="${CMAKE_SOURCE_DIR}/resources")
 # PARSE SOURCES #
 #               #
 #################
-include_directories(src)                    #headers are in the same place as sources
+include_directories(src)        #headers are in the same place as sources
 
 add_subdirectory(examples)
 #add_subdirectory(externalLibs)
