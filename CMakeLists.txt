@@ -30,14 +30,14 @@ set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOUIC ON) # Create code from a list of Qt designer ui files
 set(CMAKE_INCLUDE_CURRENT_DIR ON)  # Find includes in corresponding build directories
 
-set(CMAKE_PREFIX_PATH  "D:/Qt5/5.10.0/msvc2015_64/lib/cmake")
+#set(CMAKE_PREFIX_PATH  "D:/Qt/5.11.2/msvc2015_64/lib/cmake/Qt5")
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 #include_directories(${Qt5Core_INCLUDE_DIR})
 #include_directories(${Qt5Widgets_INCLUDE_DIR})
 #add_definitions(${Qt5Widgets_DEFINITIONS})
 
 find_package(OpenCV  REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 if(WIN32)
     find_package (Boost REQUIRED COMPONENTS system filesystem)
