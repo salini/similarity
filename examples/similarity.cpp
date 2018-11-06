@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
 		similarCheckerWidget.setFolder(vm["init_folder"].as<string>());
 	}
 	similarCheckerWidget.move(50, 50);
-	similarCheckerWidget.show();
+	similarCheckerWidget.showMaximized();
 
 	return app.exec();
 }
